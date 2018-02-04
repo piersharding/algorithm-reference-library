@@ -117,3 +117,46 @@ docker_lint: docker_build
 
 launch_dask:
 	cd tools && ansible-playbook -i ./inventory ./docker.yml
+
+docker_dcos_build:
+	$(DOCKER) build -t $(IMG)_dcos -f ./dcos/$(DOCKERFILE).dcos --build-arg PYTHON=$(PYTHON) .
+
+docker_dcos_push: docker_dcos_build
+	docker tag $(IMG)_dcos $(DOCKER_REPO)/$(IMG)_dcos:$(TAG)
+	docker push $(DOCKER_REPO)/$(IMG)_dcos:$(TAG)
+
+docker_dcos_notebook: docker_dcos_build
+	CTNR=`$(DOCKER) ps -q -f name=$(NAME)_notebook` && \
+	if [ -n "$${CTNR}" ]; then $(DOCKER) rm -f $(NAME)_notebook; fi
+	DEVICE=`ip link | grep -E " ens| wlan| eth" | grep BROADCAST | tail -1 | cut -d : -f 2  | sed "s/ //"` && \
+	IP=`ip a show $${DEVICE} | grep ' inet ' | awk '{print $$2}' | sed 's/\/.*//'` && \
+	echo "Launching at IP: $${IP}" && \
+	$(DOCKER) run --name $(NAME)_notebook --hostname $(NAME)_notebook --volume $$(pwd)/data:/arl/data -e IP=$${IP} \
+            -p 8888:8888 -d $(IMG)_dcos
+	sleep 3
+	$(DOCKER) logs $(NAME)_notebook
+
+
+docker_dcos_scheduler: docker_dcos_build
+	CTNR=`$(DOCKER) ps -q -f name=$(NAME)_scheduler` && \
+	if [ -n "$${CTNR}" ]; then $(DOCKER) rm -f $(NAME)_scheduler; fi
+	DEVICE=`ip link | grep -E " ens| wlan| eth" | grep BROADCAST | tail -1 | cut -d : -f 2  | sed "s/ //"` && \
+	IP=`ip a show $${DEVICE} | grep ' inet ' | awk '{print $$2}' | sed 's/\/.*//'` && \
+	echo "Launching at IP: $${IP}" && \
+	$(DOCKER) run --name $(NAME)_scheduler --hostname $(NAME)_scheduler --volume $$(pwd)/data:/arl/data -e IP=$${IP} \
+            --net=host -d $(IMG)_dcos start-dask-scheduler.sh
+	sleep 3
+	$(DOCKER) logs $(NAME)_scheduler
+
+
+docker_dcos_worker: docker_dcos_build
+	CTNR=`$(DOCKER) ps -q -f name=$(NAME)_worker` && \
+	if [ -n "$${CTNR}" ]; then $(DOCKER) rm -f $(NAME)_worker; fi
+	DEVICE=`ip link | grep -E " ens| wlan| eth" | grep BROADCAST | tail -1 | cut -d : -f 2  | sed "s/ //"` && \
+	IP=`ip a show $${DEVICE} | grep ' inet ' | awk '{print $$2}' | sed 's/\/.*//'` && \
+	echo "Launching at IP: $${IP}" && \
+	$(DOCKER) run --name $(NAME)_worker --hostname $(NAME)_worker --volume $$(pwd)/data:/arl/data -e IP=$${IP} -e DASK_SCHEDULER=$${IP}:8786 \
+            --net=host -d $(IMG)_dcos start-dask-worker.sh
+	sleep 3
+	$(DOCKER) logs $(NAME)_worker
+
