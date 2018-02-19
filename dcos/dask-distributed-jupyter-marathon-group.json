@@ -31,15 +31,15 @@
         "docker": {
           "image": "10.60.253.37:5000/arl_img_dcos:latest",
           "forcePullImage": true
-        }
+        },
+        "volumes": [
+          {
+            "containerPath": "/arl/data",
+            "hostPath": "/alaska/piers/algorithm-reference-library/data",
+            "mode": "RW"
+          }
+        ]
       },
-      "volumes": [
-        {
-          "containerPath": "/arl/data",
-          "hostPath": "/alaska/piers/algorithm-reference-library/data",
-          "mode": "RW"
-        }
-      ],
       "portDefinitions": [
         {
           "protocol": "tcp",
@@ -107,15 +107,15 @@
         "docker": {
           "image": "10.60.253.37:5000/arl_img_dcos:latest",
           "forcePullImage": true
-        }
+        },
+        "volumes": [
+          {
+            "containerPath": "/arl/data",
+            "hostPath": "/alaska/piers/algorithm-reference-library/data",
+            "mode": "RW"
+          }
+        ]
       },
-      "volumes": [
-        {
-          "containerPath": "/arl/data",
-          "hostPath": "/alaska/piers/algorithm-reference-library/data",
-          "mode": "RW"
-        }
-      ],
       "portDefinitions": [
         {
           "protocol": "tcp",
@@ -169,15 +169,15 @@
         "docker": {
           "image": "10.60.253.37:5000/arl_img_dcos:latest",
           "forcePullImage": true
-        }
+        },
+        "volumes": [
+          {
+            "containerPath": "/arl/data",
+            "hostPath": "/alaska/piers/algorithm-reference-library/data",
+            "mode": "RW"
+          }
+        ]
       },
-      "volumes": [
-        {
-          "containerPath": "/arl/data",
-          "hostPath": "/alaska/piers/algorithm-reference-library/data",
-          "mode": "RW"
-        }
-      ],
       "env": {
         "TERM": "xterm-256color",
         "JUPYTER_PASSWORD": "changeme",
