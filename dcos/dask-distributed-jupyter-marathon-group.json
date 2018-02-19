@@ -17,7 +17,7 @@
       ],
       "env": {
         "DASK_CONFIG": "/mnt/mesos/sandbox/config.yaml",
-        "HOME": "/home/conda",
+        "HOME": "/root",
         "TERM": "xterm-256color"
       },
       "labels": {
@@ -27,12 +27,19 @@
         "HAPROXY_0_VHOST": "vhost.example.com"
       },
       "container": {
-        "type": "MESOS",
+        "type": "DOCKER",
         "docker": {
-          "image": "vishnumohan/dask-distributed-dcos",
+          "image": "10.60.253.37:5000/arl_img_dcos:latest",
           "forcePullImage": true
         }
       },
+      "volumes": [
+        {
+          "containerPath": "/arl/data",
+          "hostPath": "/alaska/piers/algorithm-reference-library/data",
+          "mode": "RW"
+        }
+      ],
       "portDefinitions": [
         {
           "protocol": "tcp",
@@ -92,16 +99,23 @@
       ],
       "env": {
         "DASK_CONFIG": "/mnt/mesos/sandbox/config.yaml",
-        "HOME": "/home/conda",
+        "HOME": "/root",
         "TERM": "xterm-256color"
       },
       "container": {
-        "type": "MESOS",
+        "type": "DOCKER",
         "docker": {
-          "image": "vishnumohan/dask-distributed-dcos",
+          "image": "10.60.253.37:5000/arl_img_dcos:latest",
           "forcePullImage": true
         }
       },
+      "volumes": [
+        {
+          "containerPath": "/arl/data",
+          "hostPath": "/alaska/piers/algorithm-reference-library/data",
+          "mode": "RW"
+        }
+      ],
       "portDefinitions": [
         {
           "protocol": "tcp",
@@ -151,14 +165,23 @@
       "mem": 2048,
       "cmd": "/usr/local/bin/notebook.sh",
       "container": {
-        "type": "MESOS",
+        "type": "DOCKER",
         "docker": {
-          "image": "vishnumohan/dask-distributed-dcos",
+          "image": "10.60.253.37:5000/arl_img_dcos:latest",
           "forcePullImage": true
         }
       },
+      "volumes": [
+        {
+          "containerPath": "/arl/data",
+          "hostPath": "/alaska/piers/algorithm-reference-library/data",
+          "mode": "RW"
+        }
+      ],
       "env": {
-        "TERM": "xterm-256color"
+        "TERM": "xterm-256color",
+        "JUPYTER_PASSWORD": "changeme",
+        "ARL_DASK_SCHEDULER": "dask-distributed.dask-scheduler.marathon.l4lb.thisdcos.directory:8786"
       },
       "labels": {
         "MARATHON_SINGLE_INSTANCE_APP": "true",

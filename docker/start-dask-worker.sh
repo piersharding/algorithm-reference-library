@@ -51,9 +51,6 @@ then
     echo "Dask Resources: ${DASK_RESOURCES}"
 
     dask-worker \
-        --tls-ca-file "${MESOS_SANDBOX}/.ssl/ca-bundle.crt" \
-        --tls-cert "${MESOS_SANDBOX}/.ssl/scheduler.crt" \
-        --tls-key "${MESOS_SANDBOX}/.ssl/scheduler.key" \
         --host "${HOST}" \
         --worker-port "${PORT_WORKER}" \
         --nanny-port "${PORT_NANNY}" \
@@ -66,6 +63,9 @@ then
         --resources "${DASK_RESOURCES}" \
         --death-timeout "180" \
         "${DASK_SCHEDULER}"
+        # --tls-ca-file "${MESOS_SANDBOX}/.ssl/ca-bundle.crt" \
+        # --tls-cert "${MESOS_SANDBOX}/.ssl/scheduler.crt" \
+        # --tls-key "${MESOS_SANDBOX}/.ssl/scheduler.key" \
 else
     #dask-worker "$@"
     #DASK_SCHEDULER=192.168.88.202:8786

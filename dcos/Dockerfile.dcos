@@ -92,12 +92,10 @@ COPY ./docker/start-dask-worker.sh /usr/local/bin
 VOLUME ["/arl/data", "/arl/tmp"]
 
 # Expose Jupyter and Bokeh ports
-# EXPOSE  8888 8787
 EXPOSE 8888 8786 8787 8789
 
 # Setup the entrypoint or environment
 ENTRYPOINT ["tini", "--"]
 
 # Run - default is notebook
-# CMD ["/boot.sh"]
 CMD ["notebook.sh"]
