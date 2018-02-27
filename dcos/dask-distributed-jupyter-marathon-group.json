@@ -4,8 +4,8 @@
     {
       "id": "/dask-distributed/dask-scheduler",
       "instances": 1,
-      "cpus": 1,
-      "mem": 2048,
+      "cpus": 2,
+      "mem": 4096,
       "cmd": "/usr/local/bin/start-dask-scheduler.sh",
       "fetch": [
         {
@@ -29,13 +29,13 @@
       "container": {
         "type": "DOCKER",
         "docker": {
-          "image": "10.60.253.37:5000/arl_img_dcos:latest",
+          "image": "DOCKER_IMAGE",
           "forcePullImage": true
         },
         "volumes": [
           {
             "containerPath": "/arl/data",
-            "hostPath": "/alaska/piers/algorithm-reference-library/data",
+            "hostPath": "ARL_LOCATION",
             "mode": "RW"
           }
         ]
@@ -85,9 +85,9 @@
         "/dask-distributed/dask-scheduler"
       ],
       "id": "/dask-distributed/dask-worker",
-      "instances": 1,
-      "cpus": 2,
-      "mem": 4096,
+      "instances": 8,
+      "cpus": 4,
+      "mem": 16384,
       "cmd": "/usr/local/bin/start-dask-worker.sh",
       "fetch": [
         {
@@ -105,13 +105,13 @@
       "container": {
         "type": "DOCKER",
         "docker": {
-          "image": "10.60.253.37:5000/arl_img_dcos:latest",
+          "image": "DOCKER_IMAGE",
           "forcePullImage": true
         },
         "volumes": [
           {
             "containerPath": "/arl/data",
-            "hostPath": "/alaska/piers/algorithm-reference-library/data",
+            "hostPath": "ARL_LOCATION",
             "mode": "RW"
           }
         ]
@@ -161,19 +161,19 @@
       ],
       "id": "/dask-distributed/jupyter",
       "instances": 1,
-      "cpus": 1,
+      "cpus": 2,
       "mem": 2048,
       "cmd": "/usr/local/bin/notebook.sh",
       "container": {
         "type": "DOCKER",
         "docker": {
-          "image": "10.60.253.37:5000/arl_img_dcos:latest",
+          "image": "DOCKER_IMAGE",
           "forcePullImage": true
         },
         "volumes": [
           {
             "containerPath": "/arl/data",
-            "hostPath": "/alaska/piers/algorithm-reference-library/data",
+            "hostPath": "ARL_LOCATION",
             "mode": "RW"
           }
         ]

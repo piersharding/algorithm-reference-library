@@ -9,7 +9,9 @@ TAG = latest
 DOCKERFILE = Dockerfile
 DOCKER = docker
 DOCKER_REPO ?= localhost:5000
-
+DOCKER_IMAGE_LOCATION ?= 10.60.253.37:5000/arl_img_dcos:latest
+ARL_DATA_LOCATION ?= /alaska/piers/algorithm-reference-library/data
+DCOS_GROUP_FILE = dask-distributed-jupyter-marathon-group.json
 
 all: clean nosetests
 
@@ -148,7 +150,6 @@ docker_dcos_scheduler: docker_dcos_build
 	sleep 3
 	$(DOCKER) logs $(NAME)_scheduler
 
-
 docker_dcos_worker: docker_dcos_build
 	CTNR=`$(DOCKER) ps -q -f name=$(NAME)_worker` && \
 	if [ -n "$${CTNR}" ]; then $(DOCKER) rm -f $(NAME)_worker; fi
@@ -160,3 +161,12 @@ docker_dcos_worker: docker_dcos_build
 	sleep 3
 	$(DOCKER) logs $(NAME)_worker
 
+dcos_marathon_group_file:
+	cat dcos/$(DCOS_GROUP_FILE) | \
+	sed 's@DOCKER_IMAGE@$(DOCKER_IMAGE_LOCATION)@' | \
+	sed 's@ARL_LOCATION@$(ARL_DATA_LOCATION)@' | tee > $(DCOS_GROUP_FILE)
+	@echo "created $(DCOS_GROUP_FILE)."
+	@echo "copy this up onto your DC/OS cluster and run:"
+	@echo
+	@echo "    dcos marathon group add $(DCOS_GROUP_FILE)"
+	@echo
