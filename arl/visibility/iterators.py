@@ -20,6 +20,7 @@ from arl.data.parameters import get_parameter
 
 log = logging.getLogger(__name__)
 
+
 def vis_null_iter(vis: Visibility, **kwargs) -> numpy.ndarray:
     """One time iterator returning true for all rows
     
@@ -47,7 +48,7 @@ def vis_timeslice_iter(vis: Visibility, **kwargs) -> numpy.ndarray:
         timeslice = 0.1
     elif timeslice is None:
         timeslice = timemax - timemin
-        boxes = [0.5*(timemax+timemin)]
+        boxes = [0.5 * (timemax + timemin)]
     elif isinstance(timeslice, float) or isinstance(timeslice, int):
         boxes = numpy.arange(timemin, timemax, timeslice)
     else:
@@ -115,6 +116,6 @@ def vis_slice_iter(vis: Union[Visibility, BlockVisibility], **kwargs) -> numpy.n
     assert step > 0
     for row in range(0, vis.nvis, step):
         rows = vis.nvis * [False]
-        for r in range(row, min(row+step, vis.nvis)):
+        for r in range(row, min(row + step, vis.nvis)):
             rows[r] = True
         yield rows

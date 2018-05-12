@@ -113,5 +113,3 @@ def create_spectral_line_imaging_pipeline_graph(vis_graph_list, model_graph: del
     
     kwargs['first_selfcal'] = None
     return create_ical_pipeline_graph(vis_graph_list, model_graph, context=context, **kwargs)
-
-

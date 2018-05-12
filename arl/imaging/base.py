@@ -298,7 +298,7 @@ def predict_skycomponent_blockvisibility(vis: BlockVisibility,
     :return: BlockVisibility
     """
     log.warning("predict_skycomponent_blockvisibility: now deprecated, use predict_skycomponent_visibility")
-    return predict_skycomponent_visibility()
+    return predict_skycomponent_visibility(vis, sc)
 
 
 def predict_skycomponent_visibility_old(vis: Visibility, sc: Union[Skycomponent, List[Skycomponent]]) -> Visibility:

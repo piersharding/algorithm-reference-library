@@ -20,6 +20,7 @@ from arl.data.parameters import get_parameter
 
 log = logging.getLogger(__name__)
 
+
 def gaintable_null_iter(gt: GainTable, **kwargs) -> numpy.ndarray:
     """One time iterator returning true for all rows
     
@@ -47,7 +48,7 @@ def gaintable_timeslice_iter(gt: GainTable, **kwargs) -> numpy.ndarray:
         timeslice = 0.1
     elif timeslice is None:
         timeslice = timemax - timemin
-        boxes = [0.5*(timemax+timemin)]
+        boxes = [0.5 * (timemax + timemin)]
     elif isinstance(timeslice, float) or isinstance(timeslice, int):
         boxes = numpy.arange(timemin, timemax, timeslice)
     else:

@@ -272,8 +272,8 @@ def create_invert_graph(vis_graph_list, template_model_graph: delayed, dopsf=Fal
 def create_predict_graph(vis_graph_list, model_graph: delayed, vis_slices=1, facets=1, context='2d', **kwargs):
     """Predict, iterating over both the scattered vis_graph_list and image
 
-    :param facets: 
-    :param context: 
+    :param facets:
+    :param context:
     :param vis_graph_list:
     :param model_graph: Model used to determine image parameters
     :param vis_slices: Number of vis slices (w stack or timeslice)
@@ -284,7 +284,6 @@ def create_predict_graph(vis_graph_list, model_graph: delayed, vis_slices=1, fac
     image_iter = c['image_iterator']
     vis_iter = c['vis_iterator']
     predict = c['predict']
-    inner = c['inner']
     
     def predict_ignore_none(vis, model):
         if vis is not None:
@@ -344,7 +343,7 @@ def create_predict_graph(vis_graph_list, model_graph: delayed, vis_slices=1, fac
 def create_residual_graph(vis, model_graph: delayed, context='2d', **kwargs) -> delayed:
     """ Create a graph to calculate residual image using w stacking and faceting
 
-    :param context: 
+    :param context:
     :param vis:
     :param model_graph: Model used to determine image parameters
     :param vis:
@@ -396,7 +395,6 @@ def create_deconvolve_graph(dirty_graph: delayed, psf_graph: delayed, model_grap
         result[0].data += model_cube.data
         return image_scatter_channels(result[0], nchan)
     
-
     def deconvolve(dirty, psf, model):
         result = deconvolve_cube(dirty[0], psf[0], **kwargs)
         result[0].data += model.data
@@ -417,7 +415,7 @@ def create_deconvolve_facet_graph(dirty_graph: delayed, psf_graph: delayed, mode
     Does deconvolution subimage by subimage. Currently does nothing very sensible about the
     edges.
 
-    :param facets: 
+    :param facets:
     :param dirty_graph:
     :param psf_graph:
     :param model_graph: Current model
@@ -445,7 +443,7 @@ def create_deconvolve_channel_graph(dirty_graph: delayed, psf_graph: delayed, mo
     """Create a graph for deconvolution by channels, adding to the model
 
     Does deconvolution channel by channel.
-    :param subimages: 
+    :param subimages:
     :param dirty_graph:
     :param psf_graph: Must be the size of a facet
     :param model_graph: Current model

@@ -247,7 +247,7 @@ def restore_cube(model: Image, psf: Image, residual=None, **kwargs) -> Image:
             else:
                 size = max(fit.x_stddev, fit.y_stddev)
                 log.debug('restore_cube: psfwidth = %s' % (size))
-        except ValueError as err:
+        except ValueError:
             log.debug('restore_cube: warning in fit to psf, using 1 pixel stddev')
             size = 1.0
     else:

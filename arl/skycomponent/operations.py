@@ -132,7 +132,7 @@ def find_skycomponents(im: Image, fwhm=1.0, threshold=10.0, npixels=5) -> List[S
         ys = numpy.sum(flux * ys) / flux_sum
         
         point_flux = im.data[:, :, numpy.round(ys.value).astype('int'),
-                     numpy.round(xs.value).astype('int')]
+                             numpy.round(xs.value).astype('int')]
         
         # Add component
         comps.append(Skycomponent(

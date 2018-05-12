@@ -18,6 +18,7 @@ from arl.visibility.coalesce import convert_blockvisibility_to_visibility
 
 log = logging.getLogger(__name__)
 
+
 def ical(block_vis: BlockVisibility, model: Image, components=None, context='2d', controls=None, **kwargs):
     """ Post observation image, deconvolve, and self-calibrate
    
