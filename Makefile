@@ -81,7 +81,7 @@ code-flake:
 code-lint:
 	$(PYLINT) --extension-pkg-whitelist=numpy \
 	  --ignored-classes=astropy.units,astropy.constants,HDUList \
-	  -E libs/ tests/
+	  -E libs/
 
 code-analysis: code-flake code-lint
 
