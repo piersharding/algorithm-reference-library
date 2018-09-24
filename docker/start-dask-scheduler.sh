@@ -5,6 +5,8 @@ set -o errexit -o pipefail
 source "${HOME}/.bash_profile"
 #source activate dask-distributed
 
+echo "limits are: " `ulimit -n`
+
 echo "Complete environment:"
 printenv
 
@@ -31,6 +33,7 @@ then
     dask-scheduler \
         --host "${HOST}" \
         --port "${PORT_SCHEDULER}" \
+        --bokeh \
         --bokeh-port "${PORT_BOKEH}" \
         --bokeh-whitelist "${BOKEH_WHITELIST}" \
         --bokeh-prefix "${BOKEH_APP_PREFIX}" \
@@ -51,6 +54,7 @@ else
         dask-scheduler \
             --host "${DASK_HOST_NAME}" \
             --port "${DASK_PORT_SCHEDULER}" \
+            --bokeh \
             --bokeh-port "${DASK_PORT_BOKEH}" \
             --bokeh-whitelist "${DASK_BOKEH_WHITELIST}" \
             --bokeh-prefix "${DASK_BOKEH_APP_PREFIX}" \

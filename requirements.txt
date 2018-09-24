@@ -31,4 +31,5 @@ cloudpickle
 seqfile
 h5py
 jsonschema
-
+urllib3[secure]
+requests[security]

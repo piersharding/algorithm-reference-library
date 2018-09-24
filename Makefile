@@ -1,7 +1,7 @@
 # simple makefile to simplify repetitive build env management tasks under posix
 PYTHON ?= python3
-PYLINT ?= /usr/bin/pylint
-NOSETESTS ?= /usr/bin/nosetests
+PYLINT ?= pylint
+NOSETESTS ?= nosetests
 MAKE_DBG ?= ""
 TESTS ?= tests/
 FLAKE ?= flake8
@@ -76,12 +76,16 @@ docs: inplace
 
 code-flake:
 	# flake8 ignore long lines and trailing whitespace
-	$(FLAKE) --ignore=E501,W293,F401 --builtins=ModuleNotFoundError libs
+	$(FLAKE) --ignore=E501,W293,F401 --builtins=ModuleNotFoundError \
+	 data_models processing_components processing_library util workflows wrappers
 
 code-lint:
 	$(PYLINT) --extension-pkg-whitelist=numpy \
+	          --generated-members=numpy.* \
 	  --ignored-classes=astropy.units,astropy.constants,HDUList \
-	  -E libs/
+	  -E data_models processing_components processing_library util workflows \
+         wrappers/serial/calibration wrappers/serial/visibility wrappers/serial/simulation wrappers/serial/skymodel wrappers/serial/imaging wrappers/serial/skycomponent wrappers/serial/image \
+         wrappers/arlexecute/calibration wrappers/arlexecute/visibility wrappers/arlexecute/simulation wrappers/arlexecute/execution_support wrappers/arlexecute/skymodel wrappers/arlexecute/imaging wrappers/arlexecute/skycomponent wrappers/arlexecute/image
 
 code-analysis: code-flake code-lint
 

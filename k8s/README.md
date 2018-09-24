@@ -89,7 +89,7 @@ Alternatively we can use registry credentials declared in the resource descripto
 ```
 To enable this we need to create a Kubernetes Secret that holds the container registry credentials called arlregcred:
 ```
-kubectl create secret docker-registry arlregcred --docker-server=<registry.domain.name> --docker-username=<username> --docker-password=<password> --docker-email=<you@email.address?
+kubectl create secret docker-registry arlregcred --docker-server=<registry.domain.name> --docker-username=<username> --docker-password=<password> --docker-email=<you@email.address>
 ```
 
 Test that this is correctly accessible by launching a test app:

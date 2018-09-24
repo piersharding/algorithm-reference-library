@@ -17,7 +17,11 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN \
     DEBIAN_FRONTEND=noninteractive apt-get update -y && \
     apt-get install -y locales tzdata python-pip net-tools vim-tiny software-properties-common \
-            python3-software-properties build-essential curl wget fonts-liberation ca-certificates libcfitsio-dev && \
+            python3-software-properties build-essential curl wget \
+            fonts-liberation ca-certificates libcfitsio-dev \
+            libffi-dev liblapack-dev libhdf5-dev zlib1g-dev libjpeg-dev \
+            libxml2-dev libxslt-dev libsqlite-dev tcl-dev tk tk-dev \
+            libssl-dev libreadline-dev python3.6-dev && \
     echo "Setting locales  ..." && /usr/sbin/locale-gen en_US.UTF-8 && \
     /usr/sbin/locale-gen en_NZ.UTF-8 && \
     echo "Setting timezone ..." &&  /bin/echo 'Pacific/Auckland' | tee /etc/timezone && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure --frontend noninteractive tzdata && \
@@ -72,18 +76,20 @@ ADD ./data_models /arl/data_models/
 ADD ./examples /arl/examples/
 ADD ./ffiwrappers /arl/ffiwrappers/
 ADD ./k8s /arl/k8s/
-ADD ./libs /arl/libs/
 ADD ./processing_components /arl/processing_components/
+ADD ./processing_library /arl/processing_library/
 ADD ./scripts /arl/scripts/
 ADD ./tests /arl/tests/
 ADD ./util /arl/util/
 ADD ./workflows /arl/workflows/
+ADD ./wrappers /arl/wrappers/
 
 # run setup
 RUN \
     cd /arl && \
     ${PYTHON} setup.py build && \
     ${PYTHON} setup.py install && \
+    cp /arl/build/lib*/*arlffi* /arl/ && \
     cd /arl/workflows/ffiwrapped/serial && \
     make
 

@@ -5,6 +5,8 @@ set -o errexit -o pipefail
 source "${HOME}/.bash_profile"
 #source activate dask-distributed
 
+echo "limits are: " `ulimit -n`
+
 echo "Complete environment:"
 printenv
 
@@ -55,6 +57,7 @@ then
 
     dask-worker \
         --host "${HOST}" \
+        --bokeh \
         --worker-port "${PORT_WORKER}" \
         --nanny-port "${PORT_NANNY}" \
         --bokeh-port "${PORT_BOKEH}" \
@@ -85,6 +88,7 @@ else
         # dask-worker --memory-limit 7516192768 --local-directory /arl/tmp --host ${IP} --bokeh --bokeh-port 8788  --nprocs 2 --nthreads 2 --reconnect "${DASK_SCHEDULER}"
         dask-worker \
             --host "${DASK_HOST_NAME}" \
+            --bokeh \
             --worker-port "${DASK_PORT_WORKER}" \
             --nanny-port "${DASK_PORT_NANNY}" \
             --bokeh-port "${DASK_PORT_BOKEH}" \
