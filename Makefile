@@ -11,9 +11,13 @@ TAG ?= ubuntu18.04
 DOCKER_IMAGE = $(IMG):$(TAG)
 DOCKERFILE ?= Dockerfile.ubuntu18.04
 DOCKER = docker
+DOCKER_REGISTRY ?= ""
 DOCKER_REPO ?= ""
 DOCKER_USER ?= ""
 DOCKER_PASSWORD ?= ""
+KUBE_NAMESPACE ?= "arl"
+PULL_SECRET = "gitlab-registry"
+GITLAB_USER_EMAIL ?= "piers@catalyst.net.nz"
 WORKER_MEM ?= 512Mi
 WORKER_CPU ?= 500m
 WORKER_REPLICAS ?= 1
@@ -113,6 +117,27 @@ docker_nfs_arl_data:
 	docker run -d --name nfs --privileged -p 2049:2049 \
 	-v $(CURRENT_DIR)/:/arl \
 	-e SHARED_DIRECTORY=/arl itsthenetwork/nfs-server-alpine:latest
+
+namespace:
+	kubectl describe namespace $(KUBE_NAMESPACE) || kubectl create namespace $(KUBE_NAMESPACE)
+
+registry-creds: namespace
+	kubectl create secret -n $(KUBE_NAMESPACE) \
+	  docker-registry $(PULL_SECRET) \
+	 --docker-server=$(DOCKER_REGISTRY) \
+	 --docker-username=$(DOCKER_USER) \
+	 --docker-password=$(DOCKER_PASSWORD) \
+	 --docker-email=$(GITLAB_USER_EMAIL) \
+	-o yaml --dry-run | kubectl replace -n $(KUBE_NAMESPACE) --force -f -
+
+k8s_helm_deploy: registry-creds
+	cd k8s && helm install --tiller-namespace $(KUBE_NAMESPACE) --name test arl-cluster/ --wait \
+	  --namespace="$(KUBE_NAMESPACE)" \
+	  --set image.repository="$(DOCKER_REPO)$(IMG)" \
+	  --set image.tag="$(TAG)" \
+	  --set image.secrets[0].name="$(PULL_SECRET)" \
+	  --set worker.replicaCount=$(WORKER_REPLICAS) \
+	  --set nfs.server="$(NFS_SERVER)"
 
 k8s_deploy_scheduler:
 	DOCKER_IMAGE=$(DOCKER_REPO)$(DOCKER_IMAGE) \

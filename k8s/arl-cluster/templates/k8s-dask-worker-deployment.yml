@@ -88,9 +88,11 @@ spec:
         - name: bokeh
           containerPort: 8787
         readinessProbe:
-          httpGet:
-            path: /
+          tcpSocket:
             port: 8787
+          # httpGet:
+          #   path: /status
+          #   port: 8787
           initialDelaySeconds: 60
           timeoutSeconds: 10
           periodSeconds: 20
