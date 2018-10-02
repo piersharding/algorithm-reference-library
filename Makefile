@@ -1,7 +1,7 @@
 # simple makefile to simplify repetitive build env management tasks under posix
 PYTHON ?= python3
 PYLINT ?= pylint
-NOSETESTS ?= nosetests
+NOSETESTS ?= nosetests3
 MAKE_DBG ?= ""
 TESTS ?= tests/
 FLAKE ?= flake8
@@ -204,7 +204,7 @@ docker_tests: cleantests docker_test_data
 	CTNR=`$(DOCKER) ps -q -f name=$(NAME)_tests` && \
 	if [ -n "$${CTNR}" ]; then $(DOCKER) rm -f $(NAME)_tests; fi
 	$(DOCKER) run --rm --name $(NAME)_tests --hostname $(NAME) --volume arl-volume:/arl/data \
-		            $(DOCKER_IMAGE) /bin/sh -c "cd /arl && make $(MAKE_DBG) nosetests TESTS=\"${TESTS}\""
+		            $(DOCKER_IMAGE) /bin/sh -c "cd /arl && make $(MAKE_DBG) nosetests NOSETESTS=\"${NOSETESTS}\" TESTS=\"${TESTS}\""
 
 docker_pytest: cleantests docker_test_data
 	CTNR=`$(DOCKER) ps -q -f name=$(NAME)_tests` && \
