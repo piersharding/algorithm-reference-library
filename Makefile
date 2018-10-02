@@ -136,7 +136,9 @@ k8s_helm_deploy: registry-creds
 	  --set image.repository="$(DOCKER_REPO)$(IMG)" \
 	  --set image.tag="$(TAG)" \
 	  --set image.secrets[0].name="$(PULL_SECRET)" \
-	  --set worker.replicaCount=$(WORKER_REPLICAS) \
+	  --set worker.replicaCount="$(WORKER_REPLICAS)" \
+	  --set resources.limits.cpu="$(WORKER_CPU)" \
+	  --set resources.limits.memory="$(WORKER_MEM)" \
 	  --set nfs.server="$(NFS_SERVER)"
 
 k8s_deploy_scheduler:
