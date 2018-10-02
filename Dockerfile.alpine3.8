@@ -8,7 +8,6 @@ ARG PYTHON
 MAINTAINER Piers Harding "piers@catalyst.net.nz"
 
 ENV HOME /root
-ENV PYTHON_PIP_VERSION 10.0.1
 
 # runtime specific environment
 ENV JENKINS_URL 1
@@ -74,7 +73,7 @@ RUN \
     chmod +x /usr/local/bin/tini && \
     cd /src && wget https://bootstrap.pypa.io/get-pip.py && \
     python3 get-pip.py --disable-pip-version-check \
-        --no-cache-dir "pip==$PYTHON_PIP_VERSION" && \
+        --no-cache-dir "pip" && \
     rm -f get-pip.py && \
     pip3 install bokeh && \
     pip3 install pytest && \
